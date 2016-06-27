@@ -1,0 +1,29 @@
+<h2>Complete Office 365 Connection</h2>
+<form method="POST" action="/callback">
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Office 365 Group</label>
+            <input type="text" name="txtGroup" id="txtGroup" class="form-control" disabled="disabled" value="{{subscription.GroupName}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Category</label>
+            <select name="cboCategory" id="cboCategory" class="form-control">
+                <option></option>
+                {{#each categories}}
+                <option id="{{.}}">{{.}}</option>
+                {{/each}}
+            </select>
+            <input type="hidden" name="hdnWebhook" id="hdnWebhook" value="{{subscription.WebHookUri}}">
+            <input type="hidden" name="hdnGroupName" id="hdnGroupName" value="{{subscription.GroupName}}">
+            <input type="hidden" name="hdnState" id="hdnState" value="{{state}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</form>
+
+

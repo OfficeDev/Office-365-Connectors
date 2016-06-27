@@ -1,0 +1,26 @@
+<h2><a href="/items">for sale</a> > me</h2>
+<div class="row">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each items}}
+                <tr>
+                    <td>(<a href="/items/delete/{{Id}}">delete</a>)</td>
+                    <td><a href="/items/detail/{{Id}}">{{Title}}</a></td>
+                    <td>{{Category}}</td>
+                    <td>{{Price}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <a href="/items/create" class="btn btn-default">Create Listing</a>
+</div>

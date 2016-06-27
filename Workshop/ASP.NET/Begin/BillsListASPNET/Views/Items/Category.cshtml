@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Category";
+}
+@model List<BillsListASPNET.Models.Item>
+
+<h2><a href="/items">for sale</a> > @ViewData["category"]</h2>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-3">
+            <div class="card">
+                <span class="price abs">@item.Price</span>
+                <div class="img">
+                    <a href="/items/detail/@item.Id">
+                        <div class="ratio" style="background-image:url('@item.Image')"></div>
+                    </a>
+                </div>
+                <div class="details">
+                    <a href="/items/detail/@item.Id">@item.Title</a> <span class="hidden-sm">(@item.Location)</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

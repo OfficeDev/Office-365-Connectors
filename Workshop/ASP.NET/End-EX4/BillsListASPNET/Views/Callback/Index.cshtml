@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Complete Office 365 Connection";
+}
+@model BillsListASPNET.Models.Subscription
+
+<h2>Complete Office 365 Connection</h2>
+@using (Html.BeginForm("index", "callback", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Office 365 Group</label>
+            @Html.EditorFor(model => model.GroupName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Category</label>
+            @Html.DropDownListFor(model => model.Category, new SelectList((List<string>)ViewData["categories"]), new { @class = "form-control" })
+            @Html.HiddenFor(model => model.WebHookUri)
+            @Html.HiddenFor(model => model.GroupName)
+            @Html.Hidden("state", ViewData["state"].ToString())
+        </div>
+    </div>
+
+    <div class="row">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+}
+
+

@@ -1,0 +1,52 @@
+<h2>Create</h2>
+<form method="POST" action="/items/create" enctype="multipart/form-data">
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Title</label>
+            <input type="text" id="txtTitle" name="txtTitle" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Price</label>
+            <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input type="text" id="txtPrice" name="txtPrice" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Location</label>
+            <input type="text" id="txtLocation" name="txtLocation" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Category</label>
+            <select name="cboCategory" id="cboCategory" class="form-control">
+                <option></option>
+                {{#each categories}}
+                <option id="{{.}}">{{.}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Body</label>
+            <textarea name="txtBody" id="" cols="35" rows="3" class="form-control"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Image</label>
+            <input type="file" id="fileImage" name="fileImage" />
+        </div>
+    </div>
+
+    <div class="row">
+        <input type="submit" value="Save" class="btn btn-default" />
+        <button class="btn btn-default">Cancel</button>
+    </div>
+</form>

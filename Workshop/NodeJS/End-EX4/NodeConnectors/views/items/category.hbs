@@ -1,0 +1,20 @@
+<h2>
+    <a href="/items">for sale</a> > {{category}}
+</h2>
+<div class="row">
+    {{#each items}}
+        <div class="col-sm-3">
+            <div class="card">
+                <span class="price abs">{{Price}}</span>
+                <div class="img">
+                    <a href="/items/detail/{{Id}}">
+                        <div class="ratio" style="background-image:url('data:image/png;base64, {{Image}}')"></div>
+                    </a>
+                </div>
+                <div class="details">
+                    <a href="/items/detail/{{Id}}">{{Title}}</a> <span class="hidden-sm">({{Location}})</span> - <a href="/items/category?c={{Category}}">{{Category}}</a>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>

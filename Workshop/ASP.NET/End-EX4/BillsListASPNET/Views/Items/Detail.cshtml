@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+}
+@model BillsListASPNET.Models.Item
+
+<h2><a href="/items">for sale</a> > @Model.Title - @Model.Price (@Model.Location)</h2>
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6">
+        <img src="@Model.Image" class="img-responsive" />
+    </div>
+    <div class="col-xs-3"></div>
+</div>
+<div>
+    <h4>@Model.Body</h4>
+</div>
+<div>
+    <h4><a href="mailto:@Model.Owner?Subject=@Model.Title">Contact Seller</a></h4>
+</div>
+

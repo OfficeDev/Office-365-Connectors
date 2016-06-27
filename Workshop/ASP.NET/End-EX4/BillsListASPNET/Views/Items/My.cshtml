@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "My";
+}
+@model List<BillsListASPNET.Models.Item>
+
+<h2><a href="/items">for sale</a> > me</h2>
+<div class="row">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>(@Html.ActionLink("Delete", "Delete", new { id = item.Id }))</td>
+                    <td><a href="/items/detail/@item.Id">@item.Title</a></td>
+                    <td>@item.Category</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    @Html.ActionLink("Create Listing", "Create", new object() { }, new { @class = "btn btn-default" })
+</div>

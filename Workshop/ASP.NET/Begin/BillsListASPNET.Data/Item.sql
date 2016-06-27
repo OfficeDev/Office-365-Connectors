@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[Item]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Title] NVARCHAR(100) NOT NULL, 
+    [Price] DECIMAL(18, 2) NULL, 
+    [Body] NVARCHAR(MAX) NULL, 
+    [Category] NVARCHAR(50) NOT NULL, 
+    [Owner] NVARCHAR(100) NOT NULL, 
+    [PostDate] DATETIME NOT NULL, 
+    [Location] NVARCHAR(100) NOT NULL,
+	[Image] NVARCHAR(MAX) NULL
+)

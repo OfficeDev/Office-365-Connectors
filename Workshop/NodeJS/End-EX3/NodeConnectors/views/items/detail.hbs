@@ -1,0 +1,14 @@
+<h2><a href="/items">for sale</a> > {{item.Title}} - {{item.Price}} ({{item.Location}})</h2>
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6">
+        <img src="data:image/png;base64, {{item.Image}}" class="img-responsive" />
+    </div>
+    <div class="col-xs-3"></div>
+</div>
+<div>
+    <h4>{{item.Body}}</h4>
+</div>
+<div>
+    <h4><a href="mailto:{{item.Owner}}?Subject={{item.Title}}">Contact Seller</a></h4>
+</div>
