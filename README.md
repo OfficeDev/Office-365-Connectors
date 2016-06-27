@@ -19,6 +19,7 @@ This repository contains technical documentation, samples, labs, SDKs, and more 
 <a name="PPTX" />
 ## Technical PowerPoint Presentation ##
 The following PowerPoint Presentation provides a technical deep-dive into building Office 365 Connectors, including an overview of Connectors, development, and adnvanced scenarios.
+[![](http://i.imgur.com/ThUL6mZ.png)](https://github.com/OfficeDev/Office-365-Connectors/blob/master/Deep%20Dive%20into%20Office%20365%20Connectors.pptx?raw=true)
 [Back to top](#Top)
 
 <a name="Vid1" />
@@ -35,18 +36,22 @@ This deep-dive video provides a comprehensive overview of Office 365 Connectors,
 
 <a name="AspLab" />
 ## ASP.NET Connector Lab ##
+In this lab you will convert an existing ASP.NET MVC application to integrate with Office 365 Connectors. The application is a ficticious online garage sale site similar to Craigslist (but called Billslist in honor of Bill Gates). You will modify with the "Connect to Office 365" button and handle a Connector flow. You will store the Connector webhooks and call them when new items are created in the system. Finally, you will modify the Connector callback to provide additional subscription filter (ex: filter by category). 
 [Back to top](#Top)
 
 <a name="NodeLab" />
 ## NodeJS Connector Lab ##
+In this lab you will convert an existing Node.js/Express/Handlebars application to integrate with Office 365 Connectors. The application is a ficticious online garage sale site similar to Craigslist (but called Billslist in honor of Bill Gates). You will modify with the "Connect to Office 365" button and handle a Connector flow. You will store the Connector webhooks and call them when new items are created in the system. Finally, you will modify the Connector callback to provide additional subscription filter (ex: filter by category).
 [Back to top](#Top)
 
 <a name="AspSample" />
 ## ASP.NET Connector Sample ##
+This completed code sample is written in ASP.NET MVC and provides a ficticious online garage sale site similar to Craigslist (but called Billslist in honor of Bill Gates). It allows users to post items for sale in a number of categories. Users can also integrate Office 365 Connectors for specific categories. Have an Office 365 Group/Community of musicians...try subscribing to musical instruments posts.
 [Back to top](#Top)
 
 <a name="NodeSample" />
 ## NodeJS Connector Sample ##
+This completed code sample is written in Node.js/Express/Handlebars and provides a ficticious online garage sale site similar to Craigslist (but called Billslist in honor of Bill Gates). It allows users to post items for sale in a number of categories. Users can also integrate Office 365 Connectors for specific categories. Have an Office 365 Group/Community of musicians...try subscribing to musical instruments posts.
 [Back to top](#Top)
 
 <a name="ConnectorsSDK" />
