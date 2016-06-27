@@ -69,4 +69,7 @@ This completed code sample is written in Node.js/Express/Handlebars and provides
 <a name="ConnectorsSDK" />
 ## Office 365 Connectors SDK for .NET ##
 Office 365 Connectors are a powerful way to send useful 3rd party information and content into Office 365 where users can have conversations, collaborate and take action on the information. JSON data is sent into Connectors using a specific schema outline [HERE](https://dev.outlook.com/Connectors/Reference). However, .NET isn't the best platform for working with JSON, so this SDK was built to easily construct Connector messages and send them into Office 365.
+
+[https://github.com/OfficeDev/Office-365-Connectors/tree/master/SDKs](https://github.com/OfficeDev/Office-365-Connectors/tree/master/SDKs)
+
 [Back to top](#Top)
