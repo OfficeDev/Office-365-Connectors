@@ -92,7 +92,7 @@ router.post("/create", function(req, res, next) {
                             }
                             else {
                                 //process all subscriptions
-                                db.subscriptions.find({}, function(e, subs) {
+                                db.subscriptions.find({Category: newItem.Category}, function(e, subs) {
                                     var payload = {
                                         "summary": "A new listing was posted to BillsList",
                                         "sections": [

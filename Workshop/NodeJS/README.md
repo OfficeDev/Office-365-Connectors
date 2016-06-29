@@ -479,162 +479,141 @@ The solution so far sends data into Office 365 for every new entry. However, a g
 
 This Task make modifications to the BillsList solution to filter Connector subscriptions based on specific categories. This will be accomplished by providing a subscription criteria form after the consent callback.
 
-1. Open the CallbackController.cs file in the Controllers folder and add an additional Index controller action that accepts a Subscription object. Mark this new Index action with the HttpPost directive and the original Index action with HttpGet.
+1. Open the callback.js file in the routes folder and add an additional action for POST using the same /callback route.
 
- ```C#
-        // GET: Callback
-        [Route("callback")]
-        [HttpGet]
-        public ActionResult Index()
-        {
-            var error = Request["error"];
-            var state = Request["state"];
-            if (!String.IsNullOrEmpty(error))
-            {
-                return RedirectToAction("Error", "Home", null);
+ ```javascript
+        /* GET /callback */
+        router.get("/", function(req, res, next) {
+            //ensure the parameters were returned
+            var error = req.query.error;
+            var state = req.query.state;
+            if (error !== undefined) {
+                //something went wrong with consent flow
+                res.redirect("/error?error=" + error);
             }
-            else
-            {
-                var group = Request["group_name"];
-                var webhook = Request["webhook_url"];
-                Subscription sub = new Subscription();
-                sub.GroupName = group;
-                sub.WebHookUri = webhook;
+            else {
+                var group = req.query.group_name;
+                var webhook = req.query.webhook_url;
 
-                //save the subscription
-                using (BillsListEntities entities = new BillsListEntities())
-                {
-                    entities.Subscriptions.Add(sub);
-                    entities.SaveChanges();
-                    return Redirect(state);
+                //initialize the subscription
+                var subscription = {
+                    GroupName: group,
+                    WebHookUri: webhook
                 }
+
+                //save the subscription and the redirect to state
+                db.subscriptions.save(subscription, function(err, sub) {
+                    if( err || !sub ) {
+                        //something went wrong...redirect to error
+                        res.redirect("/error?error=subscription not saved");
+                    }
+                    else {
+                        //redirect to original location (state)
+                        res.redirect(state);
+                    }
+                });
             }
-        }
+        });
         
-        // POST: Callback
-        [Route("callback")]
-        [HttpPost]
-        public ActionResult Index(Subscription sub)
-        {
-        }
+        /* POST /callback */
+        router.post("/", function(req, res, next) {
+        });
 ```
 
-1. Move the save subscription logic from the HttpGet action to HttpPost and replace it by returning the view with the Subscription object.
+1. Move the save subscription saving logic from the GET action to POST and replace it by returning the view with the Subscription object, the state, and the categories from the items.js controller.
 
- ```C#
-        // GET: Callback
-        [Route("callback")]
-        [HttpGet]
-        public ActionResult Index()
-        {
-            var error = Request["error"];
-            var state = Request["state"];
-            if (!String.IsNullOrEmpty(error))
-            {
-                return RedirectToAction("Error", "Home", null);
+ ```javascript
+        /* GET /callback */
+        router.get("/", function(req, res, next) {
+            //ensure the parameters were returned
+            var error = req.query.error;
+            var state = req.query.state;
+            if (error !== undefined) {
+                //something went wrong with consent flow
+                res.redirect("/error?error=" + error);
             }
-            else
-            {
-                var group = Request["group_name"];
-                var webhook = Request["webhook_url"];
-                Subscription sub = new Subscription();
-                sub.GroupName = group;
-                sub.WebHookUri = webhook;
+            else {
+                var group = req.query.group_name;
+                var webhook = req.query.webhook_url;
 
-                return View(sub);
+                //initialize the subscription
+                var subscription = {
+                    GroupName: group,
+                    WebHookUri: webhook
+                }
+
+                res.render("callback/index", {  
+                    title: "Complete Office 365 Connection",
+                    subscription: subscription,  
+                    categories: items.categories,
+                    state: state }); 
             }
-        }
+        });
         
-        // POST: Callback
-        [Route("callback")]
-        [HttpPost]
-        public ActionResult Index(Subscription sub)
-        {
-            //save the subscription
-            using (BillsListEntities entities = new BillsListEntities())
-            {
-                entities.Subscriptions.Add(sub);
-                entities.SaveChanges();
-                return Redirect(state);
-            }
-        }
+        /* POST /callback */
+        router.post("/", function(req, res, next) {
+            //repopulate the subscription for saving
+            var subscription = {
+                GroupName: req.body.GroupName,
+                WebHookUri: req.body.hdnWebhook,
+                Category: req.body.cboCategory
+            };
+    
+            //save the subscription and the redirect to state
+            db.subscriptions.save(subscription, function(err, sub) {
+                if( err || !sub ) {
+                    //something went wrong...redirect to error
+                    res.redirect("/error?error=subscription not saved");
+                }
+                else {
+                    //redirect to original location (state)
+                    res.redirect(req.body.hdnState);
+                }
+            });
+        });
 ```
 
-1. Next, return the state and list of categories as ViewData before returning the view in the HttpGet Index action.
+1. Next, create a new folder in the **views** folder named **callback** and add an **index.hbs** file in it.
 
- ```C#
-        //return the partial subscription and add state and categories to ViewData
-        ViewData.Add("state", state);
-        ViewData.Add("categories", ItemsController.categories);
-        return View(sub);
+1. Populate index.hbs (in the callback folder) with the following markup.
+
+ ```html
+        <h2>Complete Office 365 Connection</h2>
+        <form method="POST" action="/callback">
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label">Office 365 Group</label>
+                    <input type="text" name="txtGroup" id="txtGroup" class="form-control" disabled="disabled" value="{{subscription.GroupName}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label">Category</label>
+                    <select name="cboCategory" id="cboCategory" class="form-control">
+                        <option></option>
+                        {{#each categories}}
+                        <option id="{{.}}">{{.}}</option>
+                        {{/each}}
+                    </select>
+                    <input type="hidden" name="hdnWebhook" id="hdnWebhook" value="{{subscription.WebHookUri}}">
+                    <input type="hidden" name="hdnGroupName" id="hdnGroupName" value="{{subscription.GroupName}}">
+                    <input type="hidden" name="hdnState" id="hdnState" value="{{state}}">
+                </div>
+            </div>
+
+            <div class="row">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
  ```
  
- 1. The HttpPost action returns Redirect(state), but the state variable does not exist. Modify the code to read state from the Request object.
+1. Next, you need to modify the items.js controller so it only sends Connector messages on subscriptions that meet the category criteria (right now it send messages for all subscriptions on every create). Locate the POST create action and modify the subscription query as follows.
  
- ```C#
-        [Route("callback")]
-        [HttpPost]
-        public ActionResult Index(Subscription sub)
-        {
-            //save the subscription
-            using (BillsListEntities entities = new BillsListEntities())
-            {
-                entities.Subscriptions.Add(sub);
-                entities.SaveChanges();
-
-                //redirect back to the original location the user was at
-                return Redirect(Request["state"]);
-            }
-        }
-```
- 
-1. Next, you need to create a View for the Callback Controller that will allow a user to select a category. Right-click the Views/Callback folder and select Add > View and call the view Index.
- 
-1. Populate the Index view with the following markup.
- 
-```HTML
-@{
-    ViewBag.Title = "Complete Office 365 Connection";
-}
-@model BillsListASPNET.Models.Subscription
-
-<h2>Complete Office 365 Connection</h2>
-@using (Html.BeginForm("index", "callback", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <div class="row">
-        <div class="form-group">
-            <label class="control-label">Office 365 Group</label>
-            @Html.EditorFor(model => model.GroupName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group">
-            <label class="control-label">Category</label>
-            @Html.DropDownListFor(model => model.Category, new SelectList((List<string>)ViewData["categories"]), new { @class = "form-control" })
-            @Html.HiddenFor(model => model.WebHookUri)
-            @Html.HiddenFor(model => model.GroupName)
-            @Html.Hidden("state", ViewData["state"].ToString())
-        </div>
-    </div>
-
-    <div class="row">
-        <input type="submit" value="Save" class="btn btn-default" />
-    </div>
-}
+```javascript
+        db.subscriptions.find({Category: newItem.Category}, function(e, subs) {
 ```
 
-1. Next, you need to modify the ItemsController so it only sends Connector messages on subscriptions that meet the category criteria (right now it send messages for all subscriptions on every create). Locate the HttpPost Create action and modify the subscription sending section as follows.
- 
-```C#
-        //loop through subscriptions and call webhooks for each where category matches
-        var subs = entities.Subscriptions.Where(i => i.Category == item.Category);
-        foreach (var sub in subs)
-        {
-            await callWebhook(sub.WebHookUri, item);
-        }
-```
-
-1. Start debugging the solution by clicking the start button or F5. After signing into the application, click on the Connect to Office 365 button. This time the Connector consent flow should allow you to select a category for the subscription.
+1. Start debugging the Node.js application using the debug tab in Visual Studio Code or type npm start from a command/terminal prompt. The site should be running at [http://localhost:3000](http://localhost:3000). When you click on **Listings** (and sign-in) the "**Connect to Office 365**" button should display in the header.
  
 <a name="Summary" />
 ## Summary ##
@@ -644,5 +623,3 @@ By completing this module, you should have:
 - Manually registered an Office 365 Connector and used a webhook to send data into Office 365.
 - Connected an existing web application to Office 365 via Office 365 Connectors, including the addition of "Connect to Office 365" buttons, handling callbacks from Office 365, and sending data into Office 365 via webhooks.
 - Added additional configuration to the Connector to allow filtering by category.
-
-> **Note:** You can take advantage of the [Visual Studio Dev Essentials]( https://www.visualstudio.com/en-us/products/visual-studio-dev-essentials-vs.aspx) subscription in order to get everything you need to build and deploy your app on any platform.
