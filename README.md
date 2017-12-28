@@ -73,3 +73,6 @@ Office 365 Connectors are a powerful way to send useful 3rd party information an
 [https://github.com/OfficeDev/Office-365-Connectors/tree/master/SDKs](https://github.com/OfficeDev/Office-365-Connectors/tree/master/SDKs)
 
 [Back to top](#Top)
+
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
