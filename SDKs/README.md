@@ -38,7 +38,7 @@ Message message = new Message()
         }
     }
 };
-var result = await m.Send("Connector Webhook URI");
+var result = await message.Send("Connector Webhook URI");
 </pre>
 
 **Produces the following JSON**
